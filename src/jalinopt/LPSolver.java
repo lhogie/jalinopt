@@ -1,15 +1,13 @@
 package jalinopt;
 
-import jalinopt.cplex.CPLEX_SSH;
-import jalinopt.cplex.LocalCPLEX;
-import jalinopt.lpsolve.LpSolve;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import toools.extern.ExternalProgram;
+import jalinopt.cplex.CPLEX_SSH;
+import jalinopt.cplex.LocalCPLEX;
+import jalinopt.lpsolve.LpSolve;
 import toools.extern.Proces;
 import toools.io.file.RegularFile;
 import toools.text.TextUtilities;
@@ -33,8 +31,7 @@ public abstract class LPSolver
 	static
 	{
 		defaultSolver = findSolver();
-		System.out.println("Default LP solver is "
-				+ defaultSolver.getClass().getName());
+		System.out.println("Default LP solver is " + defaultSolver.getClass().getName());
 	}
 
 	public static LPSolver getDefaultSolver()
@@ -49,7 +46,7 @@ public abstract class LPSolver
 
 	private static LPSolver findSolver()
 	{
-		if (ExternalProgram.commandIsAvailable("cplex"))
+		if (Proces.commandIsAvailable("cplex"))
 		{
 			try
 			{
@@ -62,16 +59,17 @@ public abstract class LPSolver
 			}
 			catch (Throwable t)
 			{
-				System.err.println("Cannot use the cplex command on this system. Please check.");
+				System.err.println(
+						"Cannot use the cplex command on this system. Please check.");
 			}
 		}
 
-		if (ExternalProgram.commandIsAvailable("cplex.exe"))
+		if (Proces.commandIsAvailable("cplex.exe"))
 		{
 			return new LocalCPLEX("cplex.exe");
 		}
 
-		if (ExternalProgram.commandIsAvailable("lp_solve"))
+		if (Proces.commandIsAvailable("lp_solve"))
 		{
 			return new LpSolve();
 		}
@@ -90,22 +88,15 @@ public abstract class LPSolver
 
 	private static List<String> getHostnames()
 	{
-		try
-		{
-			RegularFile f = new RegularFile("~/.jalinopt/hosts");
+		RegularFile f = new RegularFile("~/.jalinopt/hosts");
 
-			if (f.exists())
-			{
-				return TextUtilities.splitInLines(new String(f.getContent()));
-			}
-			else
-			{
-				return Collections.EMPTY_LIST;
-			}
-		}
-		catch (IOException e)
+		if (f.exists())
 		{
-			return new ArrayList<String>();
+			return TextUtilities.splitInLines(new String(f.getContent()));
+		}
+		else
+		{
+			return Collections.EMPTY_LIST;
 		}
 	}
 
@@ -121,8 +112,8 @@ public abstract class LPSolver
 		try
 		{
 			byte[] b = Proces.exec("ssh", "echo quit".getBytes(), "-o",
-					"ConnectTimeout=1", "-o", "PasswordAuthentication=no",
-					"musclotte", "cplex");
+					"ConnectTimeout=1", "-o", "PasswordAuthentication=no", "musclotte",
+					"cplex");
 			return new String(b).contains("ILOG CPLEX");
 		}
 		catch (Throwable t)

@@ -1,6 +1,7 @@
 package jalinopt;
 
 import jalinopt.Variable.TYPE;
+import toools.exceptions.NotYetImplementedException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,8 +9,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import toools.NotYetImplementedException;
 
 /**
  * Defines what a linear problem (linear model) is.
@@ -21,7 +20,8 @@ import toools.NotYetImplementedException;
 public class LP
 {
 
-	public enum OptimizationType {
+	public enum OptimizationType
+	{
 		MIN, MAX
 	}
 
@@ -53,8 +53,6 @@ public class LP
 	/**
 	 * Sets the type of optimization
 	 * 
-	 * @param optimizationType
-	 *            min or max
 	 */
 	public void setOptimizationType(OptimizationType optimizationType)
 	{
@@ -63,9 +61,6 @@ public class LP
 
 	/**
 	 * Retrieves the set of variables implied in this LP.
-	 * 
-	 * @return a set of LP variables public List<Variable> getVariables() {
-	 *         return Collections.unmodifiableList(variables); }
 	 */
 
 	public Collection<Variable> getVariables()
@@ -80,7 +75,7 @@ public class LP
 	 *            the name of a variable implied in this LP
 	 * @return the variable, or null if it could not be found
 	 */
-	public Variable getVariableByName(int variableNumber)
+	public Variable getVariableByName(long variableNumber)
 	{
 		return getVariableByName("x" + variableNumber);
 	}
@@ -99,8 +94,6 @@ public class LP
 
 	/**
 	 * Retrieves the type of optimization for this LP, min or max.
-	 * 
-	 * @return the type of optimization
 	 */
 	public OptimizationType getOptimizationType()
 	{
@@ -109,8 +102,6 @@ public class LP
 
 	/**
 	 * Retrieves the list of contrainsts applying to this LP.
-	 * 
-	 * @return the list of contrainsts.
 	 */
 	public List<Constraint> getConstraints()
 	{
@@ -125,15 +116,12 @@ public class LP
 
 	/**
 	 * Computes a CPLEX PL text representing this LP.
-	 * 
-	 * @return a PL text.
 	 */
 	public String toCplex()
 	{
 		StringBuilder b = new StringBuilder();
 
-		b.append(getOptimizationType() == OptimizationType.MIN ? "Minimize"
-				: "Maximize");
+		b.append(getOptimizationType() == OptimizationType.MIN ? "Minimize" : "Maximize");
 		b.append('\n');
 
 		b.append("\tobj: ");
@@ -188,8 +176,6 @@ public class LP
 
 	/**
 	 * Computes a CPLEX PL text representing this LP.
-	 * 
-	 * @return a PL text.
 	 */
 	public String toLpSolve()
 	{
@@ -241,9 +227,7 @@ public class LP
 
 	/**
 	 * This this LP using the default solver.
-	 * 
-	 * @return the result of the LP.
-	 * @throws SolverException
+
 	 */
 	public Result solve()
 	{
@@ -252,11 +236,6 @@ public class LP
 
 	/**
 	 * Solves this problem using the given solver.
-	 * 
-	 * @param solver
-	 *            any LP solver
-	 * @return the result of this problem
-	 * @throws SolverException
 	 */
 	public Result solve(LPSolver solver)
 	{
@@ -265,10 +244,6 @@ public class LP
 
 	/**
 	 * Adds a contrainst to this problem.
-	 * 
-	 * @param operator
-	 * @param rightOperand
-	 * @return
 	 */
 	public Constraint addConstraint(String operator, double rightOperand)
 	{
@@ -295,7 +270,7 @@ public class LP
 			b.append(objective);
 		}
 
-		if (!constraints.isEmpty())
+		if ( ! constraints.isEmpty())
 		{
 			b.append('\n');
 			b.append("\nSubject to ");
@@ -315,7 +290,6 @@ public class LP
 	/**
 	 * Creates an example LP.
 	 * 
-	 * @return an example LP.
 	 */
 	public static LP createExample()
 	{
@@ -356,7 +330,7 @@ public class LP
 
 	public void addVariable(Variable v)
 	{
-		if (!name_variable.containsKey(v.getName()))
+		if ( ! name_variable.containsKey(v.getName()))
 		{
 			name_variable.put(v.getName(), v);
 			// variables.add(v);

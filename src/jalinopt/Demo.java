@@ -24,40 +24,39 @@ import java.util.List;
 public class Demo
 {
 
-    public static void main(String[] args)
-    {
-	LP lp = new LP();
-	lp.setOptimizationType(OptimizationType.MAX);
-
-	// define the objective: x + y
-	LinearExpression objective = lp.getObjective();
-	objective.addTerm(1, lp.getVariableByName("x"));
-
-	Constraint c1 = new Constraint();
-	c1.getLeftHandSide().addTerm(1, lp.getVariableByName("x"));
-	c1.setOperator("<=");
-	c1.setRightHandSide(7);
-	lp.getConstraints().add(c1);
-
-
-	// define the type for variable
-	lp.getVariableByName("x").setType(TYPE.INTEGER);	
-	
-	PipedLPSolver.DEBUG = false;
-
-	List<LPSolver> solvers = new ArrayList<LPSolver>();
-	// solvers.add(new ApacheSolver());
-	// solvers.add(new LocalGLPK());
-	solvers.add(new CPLEX_SSH(new SSHConnectionInfo("musclotte")));
-	solvers.add(new LpSolve());
-//	solvers.add(new Cbc());
-
-	for (LPSolver s : solvers)
+	public static void main(String[] args)
 	{
-	    System.out.println("************************************");
-	    System.out.println(s.getClass().getName());
-	    System.out.println("************************************");
-	    System.out.println(lp.solve(s));
+		LP lp = new LP();
+		lp.setOptimizationType(OptimizationType.MAX);
+
+		// define the objective: x + y
+		LinearExpression objective = lp.getObjective();
+		objective.addTerm(1, lp.getVariableByName("x"));
+
+		Constraint c1 = new Constraint();
+		c1.getLeftHandSide().addTerm(1, lp.getVariableByName("x"));
+		c1.setOperator("<=");
+		c1.setRightHandSide(7);
+		lp.getConstraints().add(c1);
+
+		// define the type for variable
+		lp.getVariableByName("x").setType(TYPE.INTEGER);
+
+		PipedLPSolver.DEBUG = false;
+
+		List<LPSolver> solvers = new ArrayList<LPSolver>();
+		// solvers.add(new ApacheSolver());
+		// solvers.add(new LocalGLPK());
+		solvers.add(new CPLEX_SSH(new SSHConnectionInfo("musclotte")));
+		solvers.add(new LpSolve());
+		// solvers.add(new Cbc());
+
+		for (LPSolver s : solvers)
+		{
+			System.out.println("************************************");
+			System.out.println(s.getClass().getName());
+			System.out.println("************************************");
+			System.out.println(lp.solve(s));
+		}
 	}
-    }
 }

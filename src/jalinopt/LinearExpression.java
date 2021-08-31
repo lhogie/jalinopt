@@ -52,7 +52,7 @@ public class LinearExpression
 	    }
 	    else
 	    {
-		b.append(TextUtilities.toNiceString(c));
+		b.append(TextUtilities.removeUselessDecimals(c));
 	    }
 
 	    b.append(t.getVariable().getName());

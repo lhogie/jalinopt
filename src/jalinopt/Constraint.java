@@ -61,7 +61,7 @@ public class Constraint
 	b.append(' ');
 	b.append(operator);
 	b.append(' ');
-	b.append(TextUtilities.toNiceString(rightOperand));
+	b.append(TextUtilities.removeUselessDecimals(rightOperand));
 	return b.toString();
     }
 

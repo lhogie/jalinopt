@@ -6,7 +6,7 @@ import jalinopt.Result;
 
 import java.io.IOException;
 
-import toools.NotYetImplementedException;
+import toools.exceptions.NotYetImplementedException;
 import toools.extern.Proces;
 import toools.io.file.Directory;
 import toools.io.file.RegularFile;
